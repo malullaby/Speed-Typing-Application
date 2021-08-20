@@ -1,50 +1,18 @@
 import StopWatch from "./stopwatch.js";
+import TextPassages from "./text.js";
 
 const sw = new StopWatch();
-let texts;
-fetch("https://type.fit/api/quotes")
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (data) {
-    texts = data;
-    initialize();
-  });
-
-function generateLetter(length) {
-  let result = "";
-  let characters = "abcdefghijklmnopqrstuvwxyz";
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
-}
-
-function generateText(length) {
-  // let maxWordLen = 7;
-  // let tempText = "";
-  // for (let i = 0; i < 10; i++) {
-  //   let length = Math.floor(Math.random() * maxWordLen + 1);
-  //   tempText += generateLetter(length) + " ";
-  // }
-  // return tempText.trimEnd();
-  let randomText = texts[Math.floor(Math.random() * texts.length)];
-  let text = randomText.author
-    ? `${randomText.text} ${randomText.author}`
-    : randomText.author;
-  return text;
-}
+const textPassages = new TextPassages();
+await textPassages.fetch();
 
 let current = 0;
-let length = 50;
-// let wordLength = 9;
-let text;
 let key;
 let correct = true;
 let speed;
 let firstKeyPress = true;
 let incorrectCounter = 0;
 let done = false;
+let text;
 
 function populateText(text) {
   const parent = document.querySelector("#text");
@@ -60,12 +28,8 @@ function populateText(text) {
   }
 }
 
-function isCorrect(char, target) {
-  return char === target;
-}
-
 function initialize() {
-  text = generateText(length);
+  text = textPassages.randomText();
   populateText(text);
   document.querySelector("#i_0").classList.add("cursor");
   current = 0;
@@ -74,10 +38,9 @@ function initialize() {
   done = false;
   sw.reset();
   firstKeyPress = true;
-  // document.querySelector("#results").textContent = "";
 }
 
-// initialize();
+initialize();
 
 document.addEventListener("keydown", KeyPress);
 
@@ -92,7 +55,7 @@ function KeyPress(e) {
     initialize();
   }
 
-  if (isCorrect(text[current], key)) {
+  if (text[current] === key) {
     let element = document.querySelector("#i_" + current);
     element.classList.remove("cursor");
     if (correct) {

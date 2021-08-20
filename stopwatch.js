@@ -6,9 +6,7 @@ export default function StopWatch() {
 
   this.start = function () {
     if (isRunning) throw new Error("StopWatch has already been started.");
-
     isRunning = true;
-
     startTime = new Date();
   };
 
@@ -36,5 +34,3 @@ export default function StopWatch() {
     },
   });
 }
-
-//
