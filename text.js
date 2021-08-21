@@ -1,4 +1,4 @@
-const API_URL = "http://api.quotable.io/random";
+const API_URL = "https://api.quotable.io/random";
 
 export function getRandomText() {
   return fetch(API_URL)
