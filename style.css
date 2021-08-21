@@ -1,9 +1,31 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: rgb(90, 42, 42, 0.5);
+}
+
+#results_div {
+  /* padding: 10px;
+  width: 60%;
+  margin: 0 auto; */
+}
+
 p {
-  font-size: 30px;
+  /* font-size: 30px; */
 }
 
 #text {
-  font-size: 80px;
+  /* font-size: 80px; */
+  /* width: 80%;
+  margin: 0 auto;
+  margin-top: 100px; */
 }
 
 .cursor {

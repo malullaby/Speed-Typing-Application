@@ -1,10 +1,10 @@
 import StopWatch from "./stopwatch.js";
-import TextPassages from "./text.js";
+import { getRandomText } from "./text.js";
 import { render, updateResults } from "./view.js";
 
 const sw = new StopWatch();
-const textPassages = new TextPassages();
-await textPassages.fetch();
+// const textPassages = new TextPassages();
+// await textPassages.fetch();
 
 let current = 0;
 let key;
@@ -17,8 +17,8 @@ let text;
 
 initialize();
 
-function initialize() {
-  text = textPassages.randomText();
+async function initialize() {
+  text = await getRandomText();
   render(text);
   current = 0;
   correct = true;
