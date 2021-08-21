@@ -1,5 +1,6 @@
 import StopWatch from "./stopwatch.js";
 import TextPassages from "./text.js";
+import { render, updateResults } from "./view.js";
 
 const sw = new StopWatch();
 const textPassages = new TextPassages();
@@ -14,24 +15,11 @@ let incorrectCounter = 0;
 let done = false;
 let text;
 
-function populateText(text) {
-  const parent = document.querySelector("#text");
-  parent.innerHTML = "";
-  for (let i = 0; i < text.length; i++) {
-    let child = document.createElement("span");
-    text[i] !== " ";
-    // child.textContent = text[i] !== " " ? text[i] : "␣";
-    child.textContent = text[i];
-
-    child.id = "i_" + i;
-    parent.appendChild(child);
-  }
-}
+initialize();
 
 function initialize() {
   text = textPassages.randomText();
-  populateText(text);
-  document.querySelector("#i_0").classList.add("cursor");
+  render(text);
   current = 0;
   correct = true;
   incorrectCounter = 0;
@@ -39,8 +27,6 @@ function initialize() {
   sw.reset();
   firstKeyPress = true;
 }
-
-initialize();
 
 document.addEventListener("keydown", KeyPress);
 
@@ -91,10 +77,4 @@ let summarize = () => {
     worldsProMinute: Math.round(x * count),
   };
   updateResults(results);
-};
-
-const updateResults = (results) => {
-  document.querySelector("#mistakes").textContent = results.mistakes;
-  document.querySelector("#speed").textContent = results.speed;
-  document.querySelector("#wpm").textContent = results.worldsProMinute;
 };
