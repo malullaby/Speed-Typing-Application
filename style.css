@@ -5,27 +5,27 @@
 body {
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   min-height: 100vh;
   margin: 0;
   background-color: rgb(90, 42, 42, 0.5);
 }
 
-#results_div {
-  /* padding: 10px;
-  width: 60%;
-  margin: 0 auto; */
+.container {
+  background-color: rgba(232, 233, 223, 0.363);
+  width: 1500px;
+  max-width: 90%;
 }
 
-p {
-  /* font-size: 30px; */
+#results_div {
+  background-color: rgba(136, 136, 136, 0.363);
+  font-size: 1.3rem;
+  padding: 1rem;
 }
 
 #text {
-  /* font-size: 80px; */
-  /* width: 80%;
-  margin: 0 auto;
-  margin-top: 100px; */
+  padding: 1rem;
+  font-size: 3rem;
 }
 
 .cursor {

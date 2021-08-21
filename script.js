@@ -3,10 +3,7 @@ import { getRandomText } from "./text.js";
 import { render, updateResults } from "./view.js";
 
 const sw = new StopWatch();
-// const textPassages = new TextPassages();
-// await textPassages.fetch();
-
-let current = 0;
+let currentChar = 0;
 let key;
 let correct = true;
 let speed;
@@ -15,12 +12,12 @@ let incorrectCounter = 0;
 let done = false;
 let text;
 
-initialize();
+restart();
 
-async function initialize() {
+async function restart() {
   text = await getRandomText();
   render(text);
-  current = 0;
+  currentChar = 0;
   correct = true;
   incorrectCounter = 0;
   done = false;
@@ -31,18 +28,22 @@ async function initialize() {
 document.addEventListener("keydown", KeyPress);
 
 function KeyPress(e) {
-  key = e.key;
-  if (key === "Shift") return;
+  // Start the timer when the first key is pressed after text rendering
   if (firstKeyPress) {
     sw.start();
     firstKeyPress = false;
   }
+  // In case the last passage was fully typed a key pressed restarts the exercise
   if (done) {
-    initialize();
+    restart();
+    return;
   }
-
-  if (text[current] === key) {
-    let element = document.querySelector("#i_" + current);
+  key = e.key;
+  // The shift key by itself doesn't count as pressed key - only in combination with others.
+  if (key === "Shift") return;
+  // checking if input is correct and assigning classes to the spans
+  if (text[currentChar] === key) {
+    let element = document.querySelector("#i_" + currentChar);
     element.classList.remove("cursor");
     if (correct) {
       if (element.textContent === " ") element.classList.add("correct_space");
@@ -53,28 +54,30 @@ function KeyPress(e) {
       else element.classList.add("incorrect");
     }
     correct = true;
-    if (current < text.length - 1) {
-      current++;
-      let nextElement = document.querySelector("#i_" + current);
+    // advancing in the text until the last element and moving the cursor
+    if (currentChar < text.length - 1) {
+      currentChar++;
+      let nextElement = document.querySelector("#i_" + currentChar);
       nextElement.classList.add("cursor");
+      // last character of the text was correctly typed
     } else {
       sw.stop();
       speed = sw.duration;
+      // done - set to true - next key press triggers a new text rendering
       done = true;
       summarize();
     }
+    // if key doesn't match the respective character the boolean correct is set to false
+    //
   } else correct = false;
 }
 
 let summarize = () => {
-  //number of words
-  let count = text.split(" ").length - 1;
-  // words per minute
-  let x = 60 / speed;
+  let wordCount = text.split(" ").length - 1;
   let results = {
     mistakes: incorrectCounter,
     speed,
-    worldsProMinute: Math.round(x * count),
+    worldsPerMinute: Math.round((60 / speed) * wordCount),
   };
   updateResults(results);
 };
